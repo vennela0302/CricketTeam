@@ -43,10 +43,10 @@ app.get("/players/", async (req, res) => {
 //API 2
 app.post("/players/", async (req, res) => {
   const playerDetails = req.body;
-  const { player_name, jersey_number, role } = playerDetails;
+  const { playerName, jerseyNumber, role } = playerDetails;
   const playersQuery = `
     INSERT INTO cricket_team (player_name,jersey_number,role)
-    VALUES (${player_name},${jersey_number},${role});`;
+    VALUES (${playerName},${jerseyNumber},${role});`;
 
   const DbResponse = await db.run(playersQuery);
   const playerId = DbResponse.lastId;
