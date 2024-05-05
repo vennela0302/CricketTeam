@@ -84,9 +84,8 @@ app.get("/players/:playerId/", async (req, res) => {
       role: dbObject.role,
     };
   };
-  res.send(
-    getPlayer.map((eachPlayer) => convertDbObjectToResponseObject(eachPlayer))
-  );
+  res.send(convertDbObjectToResponseObject(getPlayer));
+  
 });
 // API 4
 app.put("/players/:playerId/", async (req, res) => {
