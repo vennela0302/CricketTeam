@@ -113,4 +113,4 @@ app.delete("/players/:playerId/", async (req, res) => {
   res.send("Player Removed");
 });
 
-module.exports = express;
+module.exports = app;
