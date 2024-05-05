@@ -26,7 +26,6 @@ const initializeDBandServer = async () => {
 };
 initializeDBandServer();
 
-//API 1:
 const convertDbObjectToResponseObject = (dbObject) => {
   return {
     playerId: dbObject.player_id,
@@ -35,7 +34,7 @@ const convertDbObjectToResponseObject = (dbObject) => {
     role: dbObject.role,
   };
 };
-
+//API 1:
 app.get("/players/", async (req, res) => {
   const getPlayersQuery = `
   SELECT
@@ -62,26 +61,33 @@ app.post("/players/", async (req, res) => {
 
   const DbResponse = await db.run(playersQuery);
   const playerId = DbResponse.lastId;
-  res.send({ playerId: playerId });
-
-  console.log("Player Added to Team");
+  //   res.send({ playerId: playerId });
+  res.send("Player Added to Team");
 });
 // node app.js
 
 // API 3
 
-app.get("/players/:playerId", async (req, res) => {
+app.get("/players/:playerId/", async (req, res) => {
   const { playerId } = req.params;
-
   const getPlayerQuery = `
-  SELECT * FROM cricket_team WHERE player_id = ${playerId};
-   `;
+    SELECT * FROM cricket_team WHERE player_id = ${playerId};
+
+     `;
+
   const getPlayer = await db.get(getPlayerQuery);
+  const convertDbObjectToResponseObject = (dbObject) => {
+    return {
+      playerId: dbObject.player_id,
+      playerName: dbObject.player_name,
+      jerseyNumber: dbObject.jersey_number,
+      role: dbObject.role,
+    };
+  };
   res.send(
     getPlayer.map((eachPlayer) => convertDbObjectToResponseObject(eachPlayer))
   );
 });
-
 // API 4
 app.put("/players/:playerId/", async (req, res) => {
   const { playerId } = req.params;
@@ -92,7 +98,7 @@ app.put("/players/:playerId/", async (req, res) => {
         cricket_team 
     SET 
         player_name = '${playerName}',
-        jersey_number = '${jerseyNumber}',
+        jersey_number = ${jerseyNumber},
         role = '${role}'
     WHERE 
         player_id = ${playerId};
